@@ -1,0 +1,53 @@
+--- LogCL/src/rrgcn.py
++++ logcl_cpu/src/rrgcn.py
+@@ -5,9 +5,9 @@
+ import numpy as np
+ 
+ # from rgcn.layers import RGCNBlockLayer as RGCNLayer
+-from rgcn.layers import UnionRGCNLayer, RGCNBlockLayer, RGAT, UnionRGCNLayer2, UnionRGATLayer, CompGCNLayer
+-from src.model import BaseRGCN
+-from src.decoder import ConvTransE, ConvTransR
++from vendor.logcl_cpu.rgcn.layers import UnionRGCNLayer, RGCNBlockLayer, RGAT, UnionRGCNLayer2, UnionRGATLayer, CompGCNLayer
++from vendor.logcl_cpu.src.model import BaseRGCN
++from vendor.logcl_cpu.src.decoder import ConvTransE, ConvTransR
+ from collections import defaultdict
+ 
+ class MLPLinear(nn.Module):
+@@ -420,7 +420,7 @@
+         sub_graph.ndata['h'] = ent_emb 
+         his_emb = self.his_rgcn_layer.forward(sub_graph, ent_emb, [self.emb_rel, self.emb_rel])
+         subg_index = torch.masked_select(
+-                torch.arange(0, sub_graph.number_of_nodes(), dtype=torch.long).cuda(),
++                torch.arange(0, sub_graph.number_of_nodes(), dtype=torch.long, device=sub_graph.device),
+                 (sub_graph.in_degrees(range(sub_graph.number_of_nodes())) > 0))
+         return F.normalize(his_emb),subg_index
+     
+--- LogCL/rgcn/layers.py
++++ logcl_cpu/rgcn/layers.py
+@@ -230,7 +230,7 @@
+             #loop_message = torch.mm(g.ndata['h'], self.loop_weight)
+             # masked_index = torch.masked_select(torch.arange(0, g.number_of_nodes(), dtype=torch.long), (g.in_degrees(range(g.number_of_nodes())) > 0))
+             masked_index = torch.masked_select(
+-                torch.arange(0, g.number_of_nodes(), dtype=torch.long).cuda(),
++                torch.arange(0, g.number_of_nodes(), dtype=torch.long, device=g.device),
+                 (g.in_degrees(range(g.number_of_nodes())) > 0))
+             loop_message = torch.mm(g.ndata['h'], self.evolve_loop_weight)
+             loop_message[masked_index, :] = torch.mm(g.ndata['h'], self.loop_weight)[masked_index, :]
+@@ -330,7 +330,7 @@
+             #loop_message = torch.mm(g.ndata['h'], self.loop_weight)
+             # masked_index = torch.masked_select(torch.arange(0, g.number_of_nodes(), dtype=torch.long), (g.in_degrees(range(g.number_of_nodes())) > 0))
+             masked_index = torch.masked_select(
+-                torch.arange(0, g.number_of_nodes(), dtype=torch.long).cuda(),
++                torch.arange(0, g.number_of_nodes(), dtype=torch.long, device=g.device),
+                 (g.in_degrees(range(g.number_of_nodes())) > 0))
+             loop_message = torch.mm(g.ndata['h'], self.evolve_loop_weight)
+             loop_message[masked_index, :] = torch.mm(g.ndata['h'], self.loop_weight)[masked_index, :]
+@@ -437,7 +437,7 @@
+             #print(self.loop_weight)
+             # loop_message = torch.mm(g.ndata['h'], self.loop_weight)
+             masked_index = torch.masked_select(
+-                torch.arange(0, g.number_of_nodes(), dtype=torch.long).cuda(),
++                torch.arange(0, g.number_of_nodes(), dtype=torch.long, device=g.device),
+                 (g.in_degrees(range(g.number_of_nodes())) > 0))
+             loop_message = torch.mm(g.ndata['h'], self.evolve_loop_weight)
+             loop_message[masked_index, :] = torch.mm(g.ndata['h'], self.loop_weight)[masked_index, :]

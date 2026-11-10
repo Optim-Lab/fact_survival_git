@@ -1,0 +1,58 @@
+{
+  "repository": "https://github.com/WeiChen3690/LogCL",
+  "commit": "0c0f5536c98c67714c2c95fc5b2245a45968d466",
+  "files": {
+    "src/rrgcn.py": {
+      "upstream_sha256": "b9c5e6ab43867e424f18f9e129581290aa911495c517e6fca6e5c3175d4dce3c",
+      "compat_sha256": "1c031decc7fe831dac87b89375a84fbc2f49628a30e55091548dd146f242f4e2",
+      "replacements": [
+        {
+          "before": "from rgcn.layers import ",
+          "after": "from vendor.logcl_cpu.rgcn.layers import ",
+          "count": 1
+        },
+        {
+          "before": "from src.model import ",
+          "after": "from vendor.logcl_cpu.src.model import ",
+          "count": 1
+        },
+        {
+          "before": "from src.decoder import ",
+          "after": "from vendor.logcl_cpu.src.decoder import ",
+          "count": 1
+        },
+        {
+          "before": "torch.arange(0, sub_graph.number_of_nodes(), dtype=torch.long).cuda()",
+          "after": "torch.arange(0, sub_graph.number_of_nodes(), dtype=torch.long, device=sub_graph.device)",
+          "count": 1
+        }
+      ]
+    },
+    "src/model.py": {
+      "upstream_sha256": "c6562807407d3d4fdfb2a16a07f03730ee2407ad5fb9d56f138e34af1a3355b4",
+      "compat_sha256": "c6562807407d3d4fdfb2a16a07f03730ee2407ad5fb9d56f138e34af1a3355b4",
+      "replacements": []
+    },
+    "src/decoder.py": {
+      "upstream_sha256": "430f9ca1f62f91241846d383e504ac19999208310bae84e80016133e44cd1214",
+      "compat_sha256": "430f9ca1f62f91241846d383e504ac19999208310bae84e80016133e44cd1214",
+      "replacements": []
+    },
+    "rgcn/layers.py": {
+      "upstream_sha256": "c901c8158bca14bd45a247ad3f2abb2e5673bc4d5cf9e5d9919cf080c1a67b43",
+      "compat_sha256": "a4a6d155b502132d0673f2525e9d0dc25ae94824ce98a7980356c0b214040d33",
+      "replacements": [
+        {
+          "before": "torch.arange(0, g.number_of_nodes(), dtype=torch.long).cuda()",
+          "after": "torch.arange(0, g.number_of_nodes(), dtype=torch.long, device=g.device)",
+          "count": 3
+        }
+      ]
+    }
+  },
+  "compatibility_only": true,
+  "omitted_original_options": [
+    "static entity-word graph unavailable in current survival input"
+  ],
+  "paper_lp_reproduction": false
+}

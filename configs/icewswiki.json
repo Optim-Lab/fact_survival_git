@@ -1,0 +1,40 @@
+{
+  "_source": "horizons, step, baseline_c: legacy datasets/config.py ICEWSWIKI_CONFIG (= FinWiki settings). Model settings: legacy proposed_experiment.py defaults (= GPU ablation run_config). CHECK against Table 1.",
+  "unit": "month",
+  "horizons": [
+    3,
+    6,
+    12
+  ],
+  "first_landmark": null,
+  "last_landmark": null,
+  "object_degree": "touching",
+  "hidden": 32,
+  "dropout": 0.1,
+  "learning_rate": 0.003,
+  "weight_decay": 0.001,
+  "batch_size": 8192,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "candidate_epochs": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    10,
+    15,
+    20,
+    30,
+    50,
+    100
+  ],
+  "development_step": 3,
+  "development_start": null,
+  "baseline_c": 0.01
+}

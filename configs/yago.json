@@ -1,0 +1,40 @@
+{
+  "_source": "horizons, baseline_c, 2003 development start: legacy datasets/config.py YAGO_CONFIG and proposed_experiment.py (range(2003, 2008 - h + 1)); landmarks 1992..2022 and incoming degree: legacy yago.py. Model settings: legacy defaults. CHECK against Table 1.",
+  "unit": "year",
+  "horizons": [
+    1,
+    2,
+    3
+  ],
+  "first_landmark": 1992,
+  "last_landmark": 2022,
+  "object_degree": "incoming",
+  "hidden": 32,
+  "dropout": 0.1,
+  "learning_rate": 0.003,
+  "weight_decay": 0.001,
+  "batch_size": 8192,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "candidate_epochs": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    10,
+    15,
+    20,
+    30,
+    50,
+    100
+  ],
+  "development_step": 1,
+  "development_start": 2003,
+  "baseline_c": 1.0
+}

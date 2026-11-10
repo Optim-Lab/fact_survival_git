@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pt
+*.bak*
+data/*
+!data/README.md
+results/*
+!results/reference/

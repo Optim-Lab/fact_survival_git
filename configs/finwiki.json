@@ -1,0 +1,40 @@
+{
+  "_source": "Model settings follow the experimental-setup text: epoch is the only tuned quantity, all other settings are shared by all datasets (legacy defaults). The Optuna trial25 values (hidden 16, dropout 0.5, lr 0.007582453616217166, wd 2.3774343597552587e-06) are NOT used here; they produced the existing trial25 result folders.",
+  "unit": "month",
+  "horizons": [
+    3,
+    6,
+    12
+  ],
+  "first_landmark": null,
+  "last_landmark": null,
+  "object_degree": "touching",
+  "hidden": 32,
+  "dropout": 0.1,
+  "learning_rate": 0.003,
+  "weight_decay": 0.001,
+  "batch_size": 8192,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "candidate_epochs": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    10,
+    15,
+    20,
+    30,
+    50,
+    100
+  ],
+  "development_step": 3,
+  "development_start": null,
+  "baseline_c": 0.01
+}
