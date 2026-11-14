@@ -1,5 +1,5 @@
 {
-  "_source": "Model settings follow the experimental-setup text (shared by all datasets, legacy defaults). Optuna trial28 (hidden 64, dropout 0.4, lr 3.98e-4, wd 2.36e-6, batch 2048) is NOT used here. horizons, step, baseline_c: legacy datasets/config.py FINSURV_CONFIG.",
+  "_source": "Model settings follow the experimental-setup text (shared by all datasets, original-code defaults). Optuna trial28 (hidden 64, dropout 0.4, lr 3.98e-4, wd 2.36e-6, batch 2048) is NOT used here. horizons, step, baseline_c: original code datasets/config.py FINSURV_CONFIG.",
   "unit": "month",
   "horizons": [
     12,
@@ -8,6 +8,7 @@
   ],
   "first_landmark": null,
   "last_landmark": null,
+  "study_end_margin": 1,
   "object_degree": "touching",
   "hidden": 32,
   "dropout": 0.1,
@@ -36,5 +37,17 @@
   ],
   "development_step": 12,
   "development_start": null,
-  "baseline_c": 0.01
+  "baseline_c": 0.01,
+  "deep_baselines": {
+    "_source": "DeepSurv / LogisticHazard of the paper's table (age features + relation only). Settings = the constants of legacy/experiments/deep_survival_rolling.py. Epochs = results/finsurvkg_featladder_selection_age_20261101/selection.json (chosen once on the validation period).",
+    "hidden": 32,
+    "dropout": 0.1,
+    "learning_rate": 0.003,
+    "weight_decay": 0.001,
+    "batch_size": 8192,
+    "epochs": {
+      "deepsurv": 2,
+      "logistic_hazard": 5
+    }
+  }
 }

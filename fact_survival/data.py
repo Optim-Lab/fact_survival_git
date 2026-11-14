@@ -39,7 +39,7 @@ def end_month_id(value): #how much fact active?
     return month_id(value) + (1 if len(parts) >= 3 and int(parts[2]) > 1 else 0)
 
 #%%
-def read_facts(path, unit="month"):
+def read_facts(path, unit="month"):#make fact table
     """unit = "month": dates like '2019-02-15' become month numbers.  unit = "year": the pickle already holds whole years (YAGO)."""
   
     raw = open(path, "rb").read()
@@ -49,8 +49,9 @@ def read_facts(path, unit="month"):
    
     train_end, valid_end, train, valid, test, _ = pickle.loads(raw)
    
-    unique = {tuple(f) for part in (train, valid, test) for f in part if len(f) == 5}     # (s, r, o, begin, end)
-   
+    unique = {tuple(f) for part in (train, valid, test) for f in part if len(f) == 5}     # (s, r, o, begin, end) #interval fact only 
+   #same fact not leave
+
     facts = pd.DataFrame(list(unique), columns=["subject", "relation", "object", "begin", "end"])
    
     to_time, to_end = (month_id, end_month_id) if unit == "month" else (int, int)

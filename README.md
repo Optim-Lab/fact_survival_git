@@ -4,10 +4,9 @@ Code for predicting how long a temporal-knowledge-graph fact stays valid. At a l
 probability `S(h_k | c)` that a fact is still valid at `c + h_k`. It mixes a neural piecewise-constant hazard with a half-life
 curve through a learned gate (symbols in the code comments follow the paper).
 
-> **Status.** `fact_survival/` is a readable re-implementation of the code that produced the paper's numbers. Each part (labels,
-> features, half-life, data reading, model, training, metrics, baselines) was checked against that original implementation
-> (the original code is not part of this repository). The full paper tables have **not** yet been reproduced end to end with
-> the new code (work in progress).
+> **Status.** `fact_survival/` is a readable re-implementation. Every part (labels, features, half-life, data reading, model,
+> training, metrics, baselines) is tested against the original code in `legacy/`, which produced the paper's numbers.
+> The full paper tables have **not** yet been reproduced end to end with the new code (work in progress).
 
 ## Layout
 | Path | What it is |
@@ -15,7 +14,8 @@ curve through a learned gate (symbols in the code comments follow the paper).
 | `fact_survival/` | the method: `labels.py`, `features.py`, `half_life.py`, `data.py`, `hazard_model.py`, `training.py`, `metrics.py`, `baselines.py`, `classical.py` |
 | `main.py` | the experiment in 4 steps: `develop`, `select`, `test`, `report` |
 | `configs/` | one JSON per dataset (horizons, model settings, seeds, candidate epochs) |
-| `tests/` | equivalence tests against the original implementation; they are skipped when `legacy/` is not present |
+| `tests/` | equivalence tests against `legacy/` |
+| `legacy/` | the original code of the paper (reference answer key, not meant to be read) |
 
 ## Install
 ```bash
@@ -42,4 +42,3 @@ FINWIKI_PKL=data/FinWiki/train_valid_test.pkl python -m pytest tests
 Tests that need a data file are skipped when its environment variable is not set.
 
 ## Known open points
-See `docs/known_issues.md` (to be written): object-degree definition per dataset, how the epoch is chosen, model settings per dataset.

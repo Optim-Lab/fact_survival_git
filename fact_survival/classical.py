@@ -14,6 +14,7 @@ Follow-up is cut at what is observable at the origin:   duration = min(T - c, or
     discrete_hazard  logistic regression for "ends in month s" on [relation, age + s - 1] over person-months;
                      S-hat(h) = product over s = 1..h of (1 - hazard_s)
 """
+#%%
 import numpy as np
 import pandas as pd
 from lifelines import CoxPHFitter, KaplanMeierFitter
@@ -33,7 +34,9 @@ def follow_up(train_rows, origin, horizon):
 
 def cox_survival(train_rows, duration, event, test_rows, horizon, penalizer, min_relation_rows):
     age_mean, age_std = train_rows["age"].mean(), train_rows["age"].std(ddof=0) or 1.0     # age standardised on the training rows
+    
     counts = train_rows["relation"].value_counts()
+    
     kept = set(counts[counts >= min_relation_rows].index.astype(str))                    # rare relations -> "__OTHER__"
 
     def design(rows, columns=None):
@@ -48,8 +51,10 @@ def cox_survival(train_rows, duration, event, test_rows, horizon, penalizer, min
     cox = CoxPHFitter(penalizer=penalizer).fit(x.assign(duration=duration, event=event.astype(int)),
                                                duration_col="duration", event_col="event")
     out = []
+
     for start in range(0, len(test_rows), 50_000):                                          # chunks keep the memory small
         x_test, _ = design(test_rows.iloc[start:start + 50_000], columns)
+    
         out.append(cox.predict_survival_function(x_test, times=[float(horizon)]).iloc[0].to_numpy(float))
     return np.concatenate(out)
 
@@ -58,8 +63,6 @@ def discrete_hazard_survival(train_rows, duration, event, test_rows, horizon, c)
     # person-months: a fact with duration d gives d rows (month s = 1..d); the event is marked in its last month
     repeats = np.repeat(np.arange(len(duration)), duration)
     month = np.arange(len(repeats)) - np.repeat(np.cumsum(duration) - duration, duration) + 1
-    order = np.argsort(month, kind="stable")                  # month by month, like the paper's code (the solver is order-sensitive)
-    repeats, month = repeats[order], month[order]
     people = pd.DataFrame({"relation": train_rows["relation"].to_numpy()[repeats],
                            "attained_age": train_rows["age"].to_numpy(float)[repeats] + month - 1})
     ended_now = event[repeats] & (month == duration[repeats])

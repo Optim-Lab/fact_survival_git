@@ -11,7 +11,9 @@
     object_degree  logistic regression on [relation (one-hot), age, object degree, object-relation degree]
 One model per horizon h_k, fitted on the cells whose label is known.
 """
+#%%
 import numpy as np
+
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
@@ -36,6 +38,7 @@ def baseline_predictions(train_rows, train_labels, test_rows, c):
     for k in range(train_labels.shape[1]):                                  # one model per horizon
         known = ~np.isnan(train_labels[:, k])
         y = train_labels[known, k].astype(int)
+        
         out["global"][:, k] = y.mean()
         for name, numeric in NUMERIC.items():
             columns = ["relation", *numeric]

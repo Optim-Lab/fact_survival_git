@@ -29,11 +29,17 @@ def half_lives(subject, relation, landmark, history_subject, history_relation, h
     for c in np.unique(landmark):    # one pass per landmark c: tau_c uses only the starts known at c
         at = landmark == c                                                 # rows predicted at this landmark
         gaps = update_gaps(history[history["b"] <= c])                     # only what is known at c
+       
         pair = gaps.groupby(["s", "r"])["gap"].agg(["mean", "count"])
         pair_gap = pair["mean"][pair["count"] >= 2].reindex(pd.MultiIndex.from_arrays([subject[at], relation[at]])).to_numpy()
+       
         relation_gap = gaps.groupby("r")["gap"].median().reindex(relation[at]).to_numpy()
+       
         use_pair, use_relation = ~np.isnan(pair_gap), ~np.isnan(relation_gap)
+       
         gap = np.where(use_pair, pair_gap, np.where(use_relation, relation_gap, gaps["gap"].median() if len(gaps) else 1.0))
+       
         tau[at] = np.maximum(0.5 * gap, 1e-6)                              # tau_c = 0.5 x gap, at least 1e-6
+       
         level[at] = np.where(use_pair, "subject_relation", np.where(use_relation, "relation", "global"))
     return tau.astype(np.float32), level

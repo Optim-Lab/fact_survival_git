@@ -4,6 +4,8 @@ from pathlib import Path
 
 LEGACY_TESTS = ["test_labels_match_legacy.py", "test_half_life_matches_legacy.py", "test_features.py",
                 "test_baselines_match_legacy.py", "test_classical_matches_legacy.py", "test_metrics_match_legacy.py",
-                "test_training_matches_legacy.py", "test_data_matches_legacy.py"]
+                "test_training_matches_legacy.py", "test_data_matches_legacy.py", "test_inputs_match_legacy.py",
+                "test_deep_baselines_match_legacy.py", "test_yago_matches_csv.py",
+                "test_graph_encoders_match_legacy.py", "test_graph_encoders_match_paper.py"]
 
 collect_ignore = [] if (Path(__file__).resolve().parents[1] / "legacy").exists() else LEGACY_TESTS

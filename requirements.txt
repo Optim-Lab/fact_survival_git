@@ -6,3 +6,7 @@ scipy==1.15.3
 torch==2.1.2
 lifelines==0.30.0
 pytest
+pycox==0.3.0            # DeepSurv / LogisticHazard baselines (deep_baselines.py)
+torchtuples==0.2.2
+h5py                    # imported by pycox
+numba==0.60.0           # imported by pycox
