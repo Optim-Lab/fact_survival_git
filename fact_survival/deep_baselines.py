@@ -1,19 +1,4 @@
-"""DeepSurv and LogisticHazard (pycox): the two neural survival baselines of the paper's tables, refit at every rolling origin.
 
-    survival = deep_predictions("deepsurv", x_train, ids_train, x_eval, ids_eval, duration, event, horizons, epochs=[3],
-                                hidden=32, dropout=0.1, learning_rate=0.003, weight_decay=0.001, batch_size=8192, seed=42)
-    survival[3]          (n_eval, K)   S-hat_c(h_k | c) after 3 epochs;  one entry per epoch asked for
-
-    x_*        (N, p) float  the numeric inputs. In the paper's tables the baselines see the fact AGE ONLY: p = 5 (columns 0-4 of x_c), no degree, no half-life
-    ids_*      (N, 3) int    (subject, relation, object) ids (data.encode_ids). Only the relation is used, as a one-hot vector
-    duration   (N,)   int    d_c = min(T - c, o - c, h_K): how long the fact was seen valid at origin o, cut at the last horizon   (classical.follow_up)
-    event      (N,)   bool   the fact really ended inside that time (otherwise it is censored)
-
-What is different from the proposed model: it is fitted on (duration, event), not on the horizon labels y_{c,k}.
-    deepsurv         Cox model, one output g(x_c);  S(h | c) = S0(h) ^ exp(g)    (baseline S0 estimated from the training rows)
-    logistic_hazard  one logit per time step s = 1..h_K: the hazard of ending in step s;  S(h | c) = product of (1 - hazard_s) up to h
-The network is a small MLP (2 hidden layers, SiLU, dropout) trained with AdamW. Every setting is chosen by the caller; nothing is decided in here.
-Needs pycox 0.3.0 and torchtuples 0.2.2.
 """
 #%%
 from functools import partial
