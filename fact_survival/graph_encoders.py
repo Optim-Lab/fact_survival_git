@@ -1,12 +1,4 @@
-"""Graph-encoder rows of Table 1: the RE-GCN / LogCL encoder of the authors + a piecewise survival head (no half-life mixture).
-
-    survival = fit_predict("regcn", rows, x, labels, horizons, origin, epochs=[5, 15], seed=42, device="cuda", **settings)
-
-    INPUT   rows    DataFrame  subject, relation, object, landmark c      only rows with c <= origin (nothing after the origin)
-            x       (N, 12)    features x_c
-            labels  (N, K)     y_{c,k} after known_at(origin, ...)        NaN = not known at the origin (never used)
-    OUTPUT  {epoch: (n, K)}    S-hat(h_k | c) of the n rows with c == origin, in row order
-
+"""
 The encoder reads the graph of the facts active at each landmark (ids from the training rows only, 0 = unseen):
     RE-GCN  (Li et al., SIGIR 2021, github.com/Lee-zix/RE-GCN)        snapshots c-2, c-1, c
     LogCL   (Chen et al., ICDE 2024, github.com/WeiChen3690/LogCL)    snapshots c-3 .. c-1 (local) + all earlier ones (global),
